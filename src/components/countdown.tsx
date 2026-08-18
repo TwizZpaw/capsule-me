@@ -10,12 +10,18 @@ export function Countdown({
   openAt: string;
   className?: string;
 }) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    const tick = () => setNow(Date.now());
+    tick();
+    const timer = window.setInterval(tick, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  if (now == null) {
+    return <span className={className}>···</span>;
+  }
 
   return <span className={className}>{formatCountdown(openAt, now)}</span>;
 }

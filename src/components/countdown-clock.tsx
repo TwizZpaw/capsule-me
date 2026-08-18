@@ -4,12 +4,20 @@ import { useEffect, useState } from "react";
 import { getCountdownParts } from "@/lib/time";
 
 export function CountdownClock({ openAt }: { openAt: string }) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    const tick = () => setNow(Date.now());
+    tick();
+    const timer = window.setInterval(tick, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  if (now == null) {
+    return (
+      <p className="text-xl font-semibold text-stone-400">···</p>
+    );
+  }
 
   const parts = getCountdownParts(openAt, now);
 
