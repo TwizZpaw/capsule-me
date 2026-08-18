@@ -17,30 +17,34 @@ export function CapsuleVessel({
   const glassId = `capsule-glass-${uid}`;
   const clipId = `capsule-clip-${uid}`;
 
+  const from = style.colorFrom;
+  const to = style.fill === "solid" ? style.colorFrom : style.colorTo;
+  const highlight = style.colorAccent;
+
   return (
     <div
       className="relative mx-auto"
       style={{
         width: px,
         height: Math.round(px * 1.28),
-        filter: `drop-shadow(0 16px 18px ${style.colorTo}66)`,
+        filter: `drop-shadow(0 16px 18px ${to}66)`,
       }}
     >
       <svg viewBox="0 0 160 200" className="size-full" aria-hidden>
         <defs>
           <linearGradient id={bodyId} x1="20%" y1="0%" x2="80%" y2="100%">
-            <stop offset="0%" stopColor={style.colorFrom} />
-            <stop offset="100%" stopColor={style.colorTo} />
+            <stop offset="0%" stopColor={from} />
+            <stop offset="100%" stopColor={to} />
           </linearGradient>
           <radialGradient id={glowId} cx="35%" cy="30%" r="65%">
-            <stop offset="0%" stopColor={style.colorAccent} stopOpacity="0.95" />
-            <stop offset="70%" stopColor={style.colorFrom} stopOpacity="0.28" />
-            <stop offset="100%" stopColor={style.colorTo} stopOpacity="0" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.7" />
+            <stop offset="55%" stopColor={from} stopOpacity="0.28" />
+            <stop offset="100%" stopColor={to} stopOpacity="0" />
           </radialGradient>
           <linearGradient id={glassId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
-            <stop offset="38%" stopColor={style.colorFrom} stopOpacity="0.2" />
-            <stop offset="100%" stopColor={style.colorTo} stopOpacity="0.55" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+            <stop offset="42%" stopColor={from} stopOpacity="0.18" />
+            <stop offset="100%" stopColor={to} stopOpacity="0.5" />
           </linearGradient>
           <clipPath id={clipId}>
             <rect x="46" y="38" width="68" height="132" rx="34" />
@@ -52,12 +56,12 @@ export function CapsuleVessel({
           y1="8"
           x2="80"
           y2="28"
-          stroke={style.colorTo}
+          stroke={to}
           strokeOpacity="0.45"
           strokeWidth="2"
         />
-        <rect x="58" y="22" width="44" height="16" rx="6" fill={style.colorTo} />
-        <rect x="64" y="18" width="32" height="10" rx="4" fill={style.colorAccent} />
+        <rect x="58" y="22" width="44" height="16" rx="6" fill={to} />
+        <rect x="64" y="18" width="32" height="10" rx="4" fill={highlight} />
 
         <rect x="44" y="36" width="72" height="138" rx="36" fill={`url(#${glassId})`} />
         <rect

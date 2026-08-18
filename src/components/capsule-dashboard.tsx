@@ -7,6 +7,7 @@ import { KeywordChips } from "@/components/keyword-chips";
 import { WeatherNote } from "@/components/weather-note";
 import { useAuth } from "@/components/auth-provider";
 import type { CapsuleSummary } from "@/lib/capsules";
+import { capsuleSurface } from "@/lib/capsule-style";
 import { formatOpenAt, getCountdownParts, isOpened } from "@/lib/time";
 import type { WeatherSnapshot } from "@/lib/weather";
 
@@ -268,7 +269,7 @@ function CapsuleCard({
         }`}
         style={{
           background: capsule.style
-            ? `linear-gradient(160deg, ${capsule.style.colorFrom}, ${capsule.style.colorTo})`
+            ? capsuleSurface(capsule.style)
             : undefined,
         }}
       >

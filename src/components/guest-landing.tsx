@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CapsuleVessel } from "@/components/capsule-vessel";
 import { KeywordChips } from "@/components/keyword-chips";
 import type { CapsuleSummary } from "@/lib/capsules";
+import { capsuleSurface } from "@/lib/capsule-style";
 
 export function GuestLanding({ capsules }: { capsules: CapsuleSummary[] }) {
   const preview = capsules.slice(0, 4);
@@ -51,7 +52,7 @@ export function GuestLanding({ capsules }: { capsules: CapsuleSummary[] }) {
                   className="flex h-36 items-center justify-center"
                   style={{
                     background: capsule.style
-                      ? `linear-gradient(160deg, ${capsule.style.colorFrom}, ${capsule.style.colorTo})`
+                      ? capsuleSurface(capsule.style)
                       : undefined,
                   }}
                 >

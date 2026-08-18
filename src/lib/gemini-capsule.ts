@@ -1,6 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import {
   CAPSULE_SHAPES,
+  capsuleFill,
   fallbackCapsuleStyle,
   parseCapsuleStyle,
   type CapsuleStyle,
@@ -41,7 +42,7 @@ ${input.letter.slice(0, 1200)}
 - phrase는 날씨·온도·습도에서 온 '그 날의 한 마디'. 한글 한 문장, 편지 내용을 인용하지 말 것.
 - keywords는 편지 전문을 인용하지 않는 짧은 한글 키워드 3~5개. 봉인된 캡슐에서도 주제를 짐작할 수 있게.
 - shape는 날씨 분위기에 맞는 형태 하나.
-- 색은 #RRGGBB. colorFrom은 밝은색, colorTo는 짙은색, colorAccent는 하이라이트.`,
+- 색은 서버에서 날씨색+편지색으로 맞추므로 만들지 말 것.`,
       config: {
         responseMimeType: "application/json",
         responseJsonSchema: {
@@ -53,25 +54,18 @@ ${input.letter.slice(0, 1200)}
               items: { type: Type.STRING },
             },
             shape: { type: Type.STRING, enum: [...CAPSULE_SHAPES] },
-            colorFrom: { type: Type.STRING },
-            colorTo: { type: Type.STRING },
-            colorAccent: { type: Type.STRING },
           },
-          required: [
-            "phrase",
-            "keywords",
-            "shape",
-            "colorFrom",
-            "colorTo",
-            "colorAccent",
-          ],
+          required: ["phrase", "keywords", "shape"],
         },
       },
     });
 
     const text = response.text;
     if (!text) return fallback;
-    return parseCapsuleStyle(JSON.parse(text), input.weather, input.letter);
+    return {
+      ...parseCapsuleStyle(JSON.parse(text), input.weather, input.letter),
+      ...capsuleFill(input.weather, input.letter),
+    };
   } catch (error) {
     console.error(error);
     return fallback;

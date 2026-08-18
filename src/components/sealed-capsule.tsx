@@ -8,7 +8,7 @@ import { KeywordChips } from "@/components/keyword-chips";
 import { WeatherNote } from "@/components/weather-note";
 import { WeatherScene } from "@/components/weather-scene";
 import type { CapsuleImage } from "@/lib/capsules";
-import type { CapsuleStyle } from "@/lib/capsule-style";
+import { capsuleSurface, type CapsuleStyle } from "@/lib/capsule-style";
 import { formatOpenAt } from "@/lib/time";
 import type { WeatherSnapshot } from "@/lib/weather";
 
@@ -77,7 +77,7 @@ export function SealedCapsule({
           }`}
           style={{
             background: style
-              ? `linear-gradient(160deg, ${style.colorFrom}, ${style.colorTo})`
+              ? capsuleSurface(style)
               : undefined,
           }}
         >
