@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #d7e8f7;
+  --foreground: #292524;
 }
 
 @theme inline {
@@ -12,15 +12,86 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes capsule-drift {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--tilt, 0deg))
+      scale(var(--bob-scale, 1));
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-18px) rotate(var(--tilt, 0deg))
+      scale(var(--bob-scale, 1));
+  }
+}
+
+@keyframes weather-fall {
+  from {
+    transform: translateY(-10vh);
+    opacity: 0.85;
+  }
+  to {
+    transform: translateY(110vh);
+    opacity: 0.15;
+  }
+}
+
+@keyframes weather-drift {
+  from {
+    transform: translateX(-12vw);
+  }
+  to {
+    transform: translateX(12vw);
+  }
+}
+
+@keyframes weather-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes weather-shimmer {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scaleY(1.08);
+  }
+}
+
+@keyframes weather-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.capsule-bob {
+  animation: capsule-drift var(--bob-duration, 5s) ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+}
+
+.weather-fall {
+  animation: weather-fall var(--fall-duration, 1.6s) linear infinite;
+  animation-delay: var(--fall-delay, 0s);
+}
+
+.weather-drift {
+  animation: weather-drift var(--drift-duration, 28s) ease-in-out infinite alternate;
+  animation-delay: var(--drift-delay, 0s);
 }
