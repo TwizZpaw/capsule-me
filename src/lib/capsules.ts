@@ -1,4 +1,6 @@
 import { supabase } from "@/lib/supabase";
+import { styleFromRow, type CapsuleStyle } from "@/lib/capsule-style";
+import { weatherFromRow, type WeatherSnapshot } from "@/lib/weather";
 
 export type CapsuleImage = {
   public_url: string;
@@ -13,6 +15,8 @@ export type CapsuleSummary = {
   createdAt: string;
   coverUrl: string | null;
   imageCount: number;
+  weather: WeatherSnapshot | null;
+  style: CapsuleStyle | null;
 };
 
 type CapsuleRow = {
@@ -20,6 +24,15 @@ type CapsuleRow = {
   recipient: string;
   open_at: string;
   created_at: string;
+  weather: string | null;
+  temperature: number | string | null;
+  humidity: number | string | null;
+  phrase: string | null;
+  keywords: string[] | null;
+  shape: string | null;
+  color_from: string | null;
+  color_to: string | null;
+  color_accent: string | null;
   capsule_images: CapsuleImage[] | null;
 };
 
@@ -32,7 +45,7 @@ export async function listCapsules(): Promise<CapsuleSummary[]> {
   const { data, error } = await supabase
     .from("capsules")
     .select(
-      "id, recipient, open_at, created_at, capsule_images(public_url, storage_path, sort_order)",
+      "id, recipient, open_at, created_at, weather, temperature, humidity, phrase, keywords, shape, color_from, color_to, color_accent, capsule_images(public_url, storage_path, sort_order)",
     )
     .order("open_at", { ascending: true });
 
@@ -47,5 +60,7 @@ export async function listCapsules(): Promise<CapsuleSummary[]> {
     createdAt: row.created_at,
     coverUrl: coverUrl(row.capsule_images),
     imageCount: row.capsule_images?.length ?? 0,
+    weather: weatherFromRow(row),
+    style: styleFromRow(row),
   }));
 }
