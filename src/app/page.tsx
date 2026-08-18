@@ -1,5 +1,5 @@
 import { connection } from "next/server";
-import { CapsuleDashboard } from "@/components/capsule-dashboard";
+import { HomeScreen } from "@/components/home-screen";
 import { listCapsules, type CapsuleSummary } from "@/lib/capsules";
 
 export default async function Home() {
@@ -13,8 +13,8 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex-1 bg-linear-to-b from-amber-50 via-rose-50 to-stone-100">
-      <CapsuleDashboard capsules={capsules} />
+    <div className="flex flex-1 flex-col">
+      <HomeScreen capsules={capsules} />
     </div>
   );
 }
