@@ -7,6 +7,8 @@ import {
 import type { CapsuleImage } from "@/lib/capsules";
 import { supabase } from "@/lib/supabase";
 import { isOpened } from "@/lib/time";
+import { weatherFromRow } from "@/lib/weather";
+import { styleFromRow } from "@/lib/capsule-style";
 
 export default async function CapsulePage({
   params,
@@ -19,7 +21,7 @@ export default async function CapsulePage({
   const { data: capsule, error } = await supabase
     .from("capsules")
     .select(
-      "id, recipient, letter, open_at, capsule_images(public_url, storage_path, sort_order)",
+      "id, recipient, letter, open_at, weather, temperature, humidity, phrase, keywords, shape, color_from, color_to, color_accent, capsule_images(public_url, storage_path, sort_order)",
     )
     .eq("id", id)
     .maybeSingle();
@@ -28,6 +30,8 @@ export default async function CapsulePage({
     notFound();
   }
 
+  const weather = weatherFromRow(capsule);
+  const style = styleFromRow(capsule);
   const images = [
     ...((capsule.capsule_images as CapsuleImage[] | null) ?? []),
   ].sort((a, b) => a.sort_order - b.sort_order);
@@ -39,13 +43,15 @@ export default async function CapsulePage({
       <SealedCapsule
         recipient={capsule.recipient}
         openAt={capsule.open_at}
-        coverUrl={images[0]?.public_url ?? null}
-        imageCount={images.length}
+        weather={weather}
+        style={style}
         preview={
           isDev
             ? {
                 letter: capsule.letter,
                 images,
+                weather,
+                style,
               }
             : null
         }
@@ -59,6 +65,8 @@ export default async function CapsulePage({
       openAt={capsule.open_at}
       letter={capsule.letter}
       images={images}
+      weather={weather}
+      style={style}
     />
   );
 }
